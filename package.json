@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "node src/newsData.js",
+    "start-nodemon": "nodemon src/newsData.js",
+    "build": "babel src -d build"
   },
   "dependencies": {
     "body-parser": "^1.20.1",
@@ -14,7 +13,6 @@
     "formidable": "^2.0.1",
     "log4js": "^6.7.1",
     "mysql": "^2.18.1",
-    "next": "12.2.2",
     "nodemailer": "^6.8.0"
   },
   "devDependencies": {

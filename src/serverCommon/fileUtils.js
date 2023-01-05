@@ -3,16 +3,6 @@ const os = require("os");
 var log4js = require("log4js");
 var logger = log4js.getLogger();
 
-const getSystemPlateFormPath = () => {
-  if (os.type() === "Windows_NT") {
-    return "\\";
-  } else if (os.type() === "Darwin" || os.type() === "Linux") {
-    return "//";
-  } else {
-    // do not support
-  }
-};
-
 const writeImageBlob = (tokenId, imageBlob, path) => {
   fs.writeFileSync(path + "\\" + tokenId + ".png", imageBlob, (err) => {
     if (err != null) {
