@@ -8,6 +8,8 @@ const {
 } = require("./serverCommon/fileUtils");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
+var log4js = require("log4js");
+var logger = log4js.getLogger();
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,9 +58,9 @@ app.post("/newData", async (req, res) => {
       [time, fields.newImg, fields.title, fields.content, fields.imgsFile],
       (err, result) => {
         if (err) {
-          console.log(err.message);
+          logger.error(err.message);
         } else {
-          console.log("数据插入成功");
+          logger.info("数据插入成功");
         }
       }
     );
@@ -200,4 +202,4 @@ app.post("/sendEmail", async (req, res) => {
 });
 
 app.listen(3001);
-console.log("Server launch Succeed");
+logger.info("Server launch Succeed");

@@ -1,5 +1,7 @@
 const fs = require("fs");
 const os = require("os");
+var log4js = require("log4js");
+var logger = log4js.getLogger();
 
 const getSystemPlateFormPath = () => {
   if (os.type() === "Windows_NT") {
@@ -14,7 +16,7 @@ const getSystemPlateFormPath = () => {
 const writeImageBlob = (tokenId, imageBlob, path) => {
   fs.writeFileSync(path + "\\" + tokenId + ".png", imageBlob, (err) => {
     if (err != null) {
-      console.log(err);
+      logger.error(err);
       return;
     }
   });
