@@ -35,15 +35,30 @@ app.all("*", function (req, res, next) {
 var mysql = require("mysql");
 var connection = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "1026929",
-  database: "news",
+  port:3306,
+  user: "mythArt",
+  password: "MythArt8869?!",
+  database: "leno",
 });
+
+//local连接
+// var connection = mysql.createConnection({
+//   host: "localhost",
+//   port:3306,
+//   user: "root",
+//   password: "123456",
+//   database: "leno",
+// });
 
 connection.connect();
 
+
+const addApiPrefix = (endpoint)=>{
+  return `/leno/${endpoint}`;
+};
+
 //保存数据到数据库
-app.post("/newData", async (req, res) => {
+app.post("/leno/newData", async (req, res) => {
   const form = formidable({ multiples: true });
   //时间
   var date = new Date();
@@ -100,7 +115,7 @@ app.post("/saveImg", async (req, res) => {
 });
 
 //从数据库获取数据(时间，标题，封面图，id)
-app.get("/newsBoxData", async (req, res) => {
+app.get(addApiPrefix("newsBoxData"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.date ,braftcontent.title ,braftcontent.Img,braftcontent.id FROM braftcontent`,
     function (error, results, fields) {
@@ -200,6 +215,7 @@ app.post("/sendEmail", async (req, res) => {
     }
   });
 });
+
 
 app.listen(3001);
 logger.info("Server launch Succeed");
