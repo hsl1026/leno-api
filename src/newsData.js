@@ -8,8 +8,10 @@ const {
 } = require("./serverCommon/fileUtils");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
-var log4js = require("log4js");
-var logger = log4js.getLogger();
+const {log4js} = require('./serverCommon/log4jConfig');
+// 当不传参或找不到对应 category时，默认使用default的配置
+const logger = log4js.getLogger();
+const errLogger = log4js.getLogger('err');
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,22 +35,22 @@ app.all("*", function (req, res, next) {
 
 //mysql连接
 var mysql = require("mysql");
-var connection = mysql.createConnection({
-  host: "localhost",
-  port:3306,
-  user: "mythArt",
-  password: "MythArt8869?!",
-  database: "leno",
-});
-
-//local连接
 // var connection = mysql.createConnection({
 //   host: "localhost",
 //   port:3306,
-//   user: "root",
-//   password: "123456",
+//   user: "mythArt",
+//   password: "MythArt8869?!",
 //   database: "leno",
 // });
+
+//local连接
+var connection = mysql.createConnection({
+  host: "localhost",
+  port:3306,
+  user: "root",
+  password: "123456",
+  database: "leno",
+});
 
 connection.connect();
 
@@ -218,4 +220,4 @@ app.post("/sendEmail", async (req, res) => {
 
 
 app.listen(3001);
-logger.info("Server launch Succeed");
+errLogger.error("Server launch Succeed");
