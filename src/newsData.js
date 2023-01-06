@@ -74,7 +74,7 @@ app.post(addApiPrefix("newData"), async (req, res) => {
       [time, fields.newImg, fields.title, fields.content, fields.imgsFile],
       (err, result) => {
         if (err) {
-          logger.error(err.message);
+          errLogger.error(err.message);
         } else {
           logger.info("数据插入成功");
         }
@@ -218,4 +218,4 @@ app.post(addApiPrefix("sendEmail"), async (req, res) => {
 });
 
 app.listen(3001);
-errLogger.error("Server launch Succeed");
+logger.info("Server launch Succeed");

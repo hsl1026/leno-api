@@ -1,12 +1,13 @@
 const fs = require("fs");
 const os = require("os");
-var log4js = require("log4js");
-var logger = log4js.getLogger();
+const {log4js} = require('./log4jConfig');
+// 当不传参或找不到对应 category时，默认使用default的配置
+const errLogger = log4js.getLogger('err');
 
 const writeImageBlob = (tokenId, imageBlob, path) => {
   fs.writeFileSync(path + "\\" + tokenId + ".png", imageBlob, (err) => {
     if (err != null) {
-      logger.error(err);
+      errLogger.error(err);
       return;
     }
   });
