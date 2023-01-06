@@ -35,32 +35,31 @@ app.all("*", function (req, res, next) {
 
 //mysql连接
 var mysql = require("mysql");
-// var connection = mysql.createConnection({
+// const connection = mysql.createConnection({
 //   host: "localhost",
-//   port:3306,
+//   port: 3306,
 //   user: "mythArt",
 //   password: "MythArt8869?!",
 //   database: "leno",
 // });
 
 //local连接
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
   port:3306,
   user: "root",
-  password: "123456",
-  database: "leno",
+  password: "1026929",
+  database: "news",
 });
 
 connection.connect();
 
-
-const addApiPrefix = (endpoint)=>{
+const addApiPrefix = (endpoint) => {
   return `/leno/${endpoint}`;
 };
 
 //保存数据到数据库
-app.post("/leno/newData", async (req, res) => {
+app.post(addApiPrefix("newData"), async (req, res) => {
   const form = formidable({ multiples: true });
   //时间
   var date = new Date();
@@ -86,7 +85,7 @@ app.post("/leno/newData", async (req, res) => {
 });
 
 //保存图片到本地并返回地址
-app.post("/saveImg", async (req, res) => {
+app.post(addApiPrefix("saveImg"), async (req, res) => {
   const form = formidable({ multiples: true });
   var date = new Date();
   let time =
@@ -127,7 +126,7 @@ app.get(addApiPrefix("newsBoxData"), async (req, res) => {
 });
 
 //从数据库获取数据(标题，id)
-app.get("/newsTitle", async (req, res) => {
+app.get(addApiPrefix("newsTitle"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.title,braftcontent.id FROM braftcontent`,
     function (error, results, fields) {
@@ -137,7 +136,7 @@ app.get("/newsTitle", async (req, res) => {
 });
 
 //从数据库获取数据(id)
-app.get("/newsId", async (req, res) => {
+app.get(addApiPrefix("newsId"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.id FROM braftcontent`,
     function (error, results, fields) {
@@ -147,7 +146,7 @@ app.get("/newsId", async (req, res) => {
 });
 
 //从数据库获取数据(标题，内容)
-app.get("/newsContent", async (req, res) => {
+app.get(addApiPrefix("newsContent"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.content,braftcontent.title FROM braftcontent WHERE braftcontent.id =${req.query.id}`,
     function (error, results, fields) {
@@ -157,7 +156,7 @@ app.get("/newsContent", async (req, res) => {
 });
 
 //删除新闻
-app.post("/deleteNew", async (req, res) => {
+app.post(addApiPrefix("deleteNew"), async (req, res) => {
   connection.query(
     `DELETE FROM braftcontent WHERE braftcontent.id=${req.query.id};`,
     function (error, results, fields) {
@@ -170,7 +169,7 @@ app.post("/deleteNew", async (req, res) => {
 });
 
 //删除临时图片
-app.get("/deleteImgsFile", async (req, res) => {
+app.get(addApiPrefix("deleteImgsFile"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.file FROM braftcontent WHERE braftcontent.id = ${req.query.id};`,
     function (error, results, fields) {
@@ -184,7 +183,7 @@ app.get("/deleteImgsFile", async (req, res) => {
 });
 
 //发送邮箱
-app.post("/sendEmail", async (req, res) => {
+app.post(addApiPrefix("sendEmail"), async (req, res) => {
   var transporter = nodemailer.createTransport({
     service: "qq",
     port: 465, // SMTP 端口
@@ -217,7 +216,6 @@ app.post("/sendEmail", async (req, res) => {
     }
   });
 });
-
 
 app.listen(3001);
 errLogger.error("Server launch Succeed");
