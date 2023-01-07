@@ -34,23 +34,23 @@ app.all("*", function (req, res, next) {
 });
 
 //mysql连接
-var mysql = require("mysql");
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   port: 3306,
-//   user: "mythArt",
-//   password: "MythArt8869?!",
-//   database: "leno",
-// });
-
-//local连接
+const mysql = require("mysql");
 const connection = mysql.createConnection({
   host: "localhost",
-  port:3306,
-  user: "root",
-  password: "1026929",
-  database: "news",
+  port: 3306,
+  user: "mythArt",
+  password: "MythArt8869?!",
+  database: "leno",
 });
+
+//local连接
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   port:3306,
+//   user: "root",
+//   password: "1026929",
+//   database: "news",
+// });
 
 connection.connect();
 
@@ -62,7 +62,7 @@ const addApiPrefix = (endpoint) => {
 app.post(addApiPrefix("newData"), async (req, res) => {
   const form = formidable({ multiples: true });
   //时间
-  var date = new Date();
+  const date = new Date();
   let time =
     date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate();
   form.parse(req, (err, fields, files) => {
@@ -87,7 +87,7 @@ app.post(addApiPrefix("newData"), async (req, res) => {
 //保存图片到本地并返回地址
 app.post(addApiPrefix("saveImg"), async (req, res) => {
   const form = formidable({ multiples: true });
-  var date = new Date();
+  const date = new Date();
   let time =
     date.getFullYear().toString() +
     (date.getMonth() + 1).toString() +
@@ -184,7 +184,7 @@ app.get(addApiPrefix("deleteImgsFile"), async (req, res) => {
 
 //发送邮箱
 app.post(addApiPrefix("sendEmail"), async (req, res) => {
-  var transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service: "qq",
     port: 465, // SMTP 端口
     secureConnection: true, // 使用 SSL
@@ -194,7 +194,7 @@ app.post(addApiPrefix("sendEmail"), async (req, res) => {
       pass: "oxdkisyomyjrdgei",
     },
   });
-  var mailOptions = {
+  const mailOptions = {
     from: "客户<2936875129@qq.com>", // 发件地址
     to: "2936875129@qq.com", // 收件列表
     subject: req.body.userName, // 标题
