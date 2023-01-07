@@ -30,7 +30,7 @@ function removeDir(dir) {
     if (isExist) {
       let files = fs.readdirSync(dir);
       files.forEach(function (file, index) {
-        const curPath = dir + "/" + file;
+        const curPath = dir + getSystemPlateFormPath() + file;
         fs.unlinkSync(curPath, function (err) {
           if (err) reject(err);
         });
