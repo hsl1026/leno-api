@@ -8,14 +8,14 @@ const getSystemPlateFormPath = () => {
   if (os.type() === 'Windows_NT') {
     return '\\'
   } else if (os.type() === 'Darwin' || os.type() === 'Linux') {
-    return '//'
+    return '/'
   } else {
     // do not support
   }
 }
 
 const writeImageBlob = (tokenId, imageBlob, path) => {
-  fs.writeFileSync(path + "\\" + tokenId + ".png", imageBlob, (err) => {
+  fs.writeFileSync(path + getSystemPlateFormPath() + tokenId + ".png", imageBlob, (err) => {
     if (err != null) {
       errLogger.error(err);
       return;
