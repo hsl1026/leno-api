@@ -5,10 +5,11 @@ const {
   dirExists,
   writeImageBlob,
   removeDir,
+  getSystemPlateFormPath
 } = require("./serverCommon/fileUtils");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
-const {log4js} = require('./serverCommon/log4jConfig');
+const { log4js } = require('./serverCommon/log4jConfig');
 // 当不传参或找不到对应 category时，默认使用default的配置
 const logger = log4js.getLogger();
 const errLogger = log4js.getLogger('err');
@@ -46,7 +47,7 @@ const connection = mysql.createConnection({
 //local连接
 // const connection = mysql.createConnection({
 //   host: "localhost",
-//   port:3306,
+//   port: 3306,
 //   user: "root",
 //   password: "1026929",
 //   database: "news",
@@ -57,6 +58,8 @@ connection.connect();
 const addApiPrefix = (endpoint) => {
   return `/leno/${endpoint}`;
 };
+
+const system = getSystemPlateFormPath();
 
 //保存数据到数据库
 app.post(addApiPrefix("newData"), async (req, res) => {
@@ -97,7 +100,7 @@ app.post(addApiPrefix("saveImg"), async (req, res) => {
     date.getSeconds().toString() +
     date.getMilliseconds().toString();
 
-  let imgFile = await dirExists("D:\\work\\leno\\newsImg\\" + time);
+  let imgFile = await dirExists('./newsImg/' + time);
   form.parse(req, async (err, fields, files) => {
     let imgs = [];
     let imgsPath = [];
@@ -109,7 +112,7 @@ app.post(addApiPrefix("saveImg"), async (req, res) => {
     }
     for (let i = 0; i < imgs.length; i++) {
       writeImageBlob(i, fs.readFileSync(imgs[i]), imgFile);
-      imgsPath.push(imgFile + "\\" + i + ".png");
+      imgsPath.push(imgFile + system + i + ".png");
     }
     res.send([imgsPath, imgFile]);
   });

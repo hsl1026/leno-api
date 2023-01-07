@@ -1,8 +1,18 @@
 const fs = require("fs");
 const os = require("os");
-const {log4js} = require('./log4jConfig');
+const { log4js } = require('./log4jConfig');
 // 当不传参或找不到对应 category时，默认使用default的配置
 const errLogger = log4js.getLogger('err');
+
+const getSystemPlateFormPath = () => {
+  if (os.type() === 'Windows_NT') {
+    return '\\'
+  } else if (os.type() === 'Darwin' || os.type() === 'Linux') {
+    return '//'
+  } else {
+    // do not support
+  }
+}
 
 const writeImageBlob = (tokenId, imageBlob, path) => {
   fs.writeFileSync(path + "\\" + tokenId + ".png", imageBlob, (err) => {
@@ -67,4 +77,5 @@ module.exports = {
   dirExists,
   writeImageBlob,
   removeDir,
+  getSystemPlateFormPath
 };
