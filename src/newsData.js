@@ -112,7 +112,7 @@ app.post(addApiPrefix("saveImg"), async (req, res) => {
     }
     for (let i = 0; i < imgs.length; i++) {
       writeImageBlob(i, fs.readFileSync(imgs[i]), imgFile);
-      imgsPath.push(imgFile + system + i + ".png");
+      imgsPath.push('https://server.myth.art/newsImg/' + time + '/' + i + ".png");
     }
     res.send([imgsPath, imgFile]);
   });
