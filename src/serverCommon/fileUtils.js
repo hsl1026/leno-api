@@ -32,10 +32,12 @@ function removeDir(dir) {
       files.forEach(function (file, index) {
         const curPath = dir + getSystemPlateFormPath() + file;
         fs.unlinkSync(curPath, function (err) {
-          if (err) reject(err);
+          if (err) errLogger.error(err);;
         });
       });
-      fs.rmdirSync(dir);
+      fs.rmdirSync(dir, function (err) {
+        if (err) errLogger.error(err);;
+      });
     }
   });
 }

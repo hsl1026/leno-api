@@ -5,7 +5,6 @@ const {
   dirExists,
   writeImageBlob,
   removeDir,
-  getSystemPlateFormPath
 } = require("./serverCommon/fileUtils");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
@@ -59,8 +58,6 @@ const addApiPrefix = (endpoint) => {
   return `/leno/${endpoint}`;
 };
 
-const system = getSystemPlateFormPath();
-
 //保存数据到数据库
 app.post(addApiPrefix("newData"), async (req, res) => {
   const form = formidable({ multiples: true });
@@ -102,6 +99,10 @@ app.post(addApiPrefix("saveImg"), async (req, res) => {
 
   let imgFile = await dirExists('./newsImg/' + time);
   form.parse(req, async (err, fields, files) => {
+    if (err) {
+      errLogger.error(err)
+      return
+    }
     let imgs = [];
     let imgsPath = [];
     imgs.push(files.newImg.filepath);
@@ -123,6 +124,10 @@ app.get(addApiPrefix("newsBoxData"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.date ,braftcontent.title ,braftcontent.Img,braftcontent.id FROM braftcontent`,
     function (error, results, fields) {
+      if (error) {
+        errLogger.error(error)
+        return
+      }
       res.send(JSON.stringify(results));
     }
   );
@@ -133,6 +138,10 @@ app.get(addApiPrefix("newsTitle"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.title,braftcontent.id FROM braftcontent`,
     function (error, results, fields) {
+      if (error) {
+        errLogger.error(error)
+        return
+      }
       res.send(JSON.stringify(results));
     }
   );
@@ -143,6 +152,10 @@ app.get(addApiPrefix("newsId"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.id FROM braftcontent`,
     function (error, results, fields) {
+      if (error) {
+        errLogger.error(error)
+        return
+      }
       res.send(JSON.stringify(results));
     }
   );
@@ -153,6 +166,10 @@ app.get(addApiPrefix("newsContent"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.content,braftcontent.title FROM braftcontent WHERE braftcontent.id =${req.query.id}`,
     function (error, results, fields) {
+      if (error) {
+        errLogger.error(error)
+        return
+      }
       res.send(JSON.stringify(results));
     }
   );
@@ -163,10 +180,11 @@ app.post(addApiPrefix("deleteNew"), async (req, res) => {
   connection.query(
     `DELETE FROM braftcontent WHERE braftcontent.id=${req.query.id};`,
     function (error, results, fields) {
-      if (results) {
-        res.send("删除成功");
+      if (error) {
+        errLogger.error(error)
+        return
       }
-      return;
+      res.send("删除成功");
     }
   );
 });
@@ -176,6 +194,10 @@ app.get(addApiPrefix("deleteImgsFile"), async (req, res) => {
   connection.query(
     `SELECT braftcontent.file FROM braftcontent WHERE braftcontent.id = ${req.query.id};`,
     function (error, results, fields) {
+      if (error) {
+        errLogger.error(error)
+        return
+      }
       const imgFile = JSON.stringify(results);
       if (JSON.parse(imgFile)[0].file) {
         removeDir(JSON.parse(imgFile)[0].file);
