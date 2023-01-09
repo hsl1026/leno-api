@@ -41,8 +41,8 @@ const connection = mysql.createConnection({
   user: "mythArt",
   password: "MythArt8869?!",
   database: "leno",
-  charset   : 'utf8mb4',
-  collation : 'utf8mb4_general_ci'
+  charset: 'utf8mb4',
+  collation: 'utf8mb4_general_ci'
 });
 
 //local连接
@@ -83,11 +83,7 @@ app.post(addApiPrefix("newData"), async (req, res) => {
         if (err) {
           errLogger.error(err.message);
         } else {
-<<<<<<< HEAD
           logger.info("new Data insert success");
-=======
-          logger.info("Data inserted successfully");
->>>>>>> 8e625ac (fix bug)
         }
       }
     );
