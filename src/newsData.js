@@ -83,7 +83,11 @@ app.post(addApiPrefix("newData"), async (req, res) => {
         if (err) {
           errLogger.error(err.message);
         } else {
+<<<<<<< HEAD
           logger.info("new Data insert success");
+=======
+          logger.info("Data inserted successfully");
+>>>>>>> 8e625ac (fix bug)
         }
       }
     );
@@ -114,8 +118,12 @@ app.post(addApiPrefix("saveImg"), async (req, res) => {
     let imgsPath = [];
     imgs.push(files.newImg.filepath);
     if (files.compressImgs) {
-      for (let i = 0; i < files.compressImgs.length; i++) {
-        imgs.push(files.compressImgs[i].filepath);
+      if (files.compressImgs.length) {
+        for (let i = 0; i < files.compressImgs.length; i++) {
+          imgs.push(files.compressImgs[i].filepath);
+        }
+      } else {
+        imgs.push(files.compressImgs.filepath);
       }
     }
     for (let i = 0; i < imgs.length; i++) {
