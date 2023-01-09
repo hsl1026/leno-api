@@ -41,6 +41,8 @@ const connection = mysql.createConnection({
   user: "mythArt",
   password: "MythArt8869?!",
   database: "leno",
+  charset   : 'utf8mb4',
+  collation : 'utf8mb4_general_ci'
 });
 
 //local连接
@@ -57,6 +59,11 @@ connection.connect();
 const addApiPrefix = (endpoint) => {
   return `/leno/${endpoint}`;
 };
+
+//Catch global uncaught exception
+process.on('uncaughtException', function (err) {
+  errLogger.error(err);
+});
 
 //保存数据到数据库
 app.post(addApiPrefix("newData"), async (req, res) => {
@@ -76,7 +83,7 @@ app.post(addApiPrefix("newData"), async (req, res) => {
         if (err) {
           errLogger.error(err.message);
         } else {
-          logger.info("数据插入成功");
+          logger.info("new Data insert success");
         }
       }
     );
